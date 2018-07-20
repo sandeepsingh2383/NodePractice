@@ -351,3 +351,59 @@ function enrichForm(schema, uiSchema, formData){
   })
   return promiseToReturn;
 }
+
+/*
+JSON
+
+
+{
+  "registrations": {
+    "items": [
+      {
+        "registrationId": 11,
+        "registrationName": "Reg11"
+      },
+      {
+        "registrationId": 12,
+        "registrationName": "Reg12"
+      },
+      {
+        "registrationId": 13,
+        "registrationName": "Reg13"
+      }
+    ]
+  },
+  "programs": {
+    "items": [
+      {
+        "programId": 111,
+        "programName": "Prog111"
+      },
+      {
+        "programId": 222,
+        "programName": "Prog222"
+      },
+      {
+        "programId": 123,
+        "programName": "IDA-123"
+      }
+    ]
+  },
+  "strategies": {
+    "items": [
+      {
+        "strategyId": 31,
+        "strategyName": "Strate-31"
+      },
+      {
+        "strategyId": 32,
+        "strategyName": "Strate-32"
+      },
+      {
+        "strategyId": 33,
+        "strategyName": "Strate-33"
+      }
+    ]
+  }
+}
+*/
