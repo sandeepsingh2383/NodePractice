@@ -352,6 +352,15 @@ function setEnums(field, data) {
   return promiseToReturn;
 }*/
 
+function fetchData(field, promises) {
+  promises.push(
+    fetch(field.dataSourceUrl).then(response => {
+      return response.json();
+    }).then(data => {
+      setEnums(field, data);
+    }));
+}
+
 function enrichForm(schema, uiSchema, formData){
   debugger;
   if (schema.type === 'object' && schema.properties) {
