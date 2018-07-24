@@ -324,7 +324,7 @@ function setEnums(field, data) {
   }
 }
 
-function enrichForm(schema, uiSchema, formData){
+/*function enrichForm(schema, uiSchema, formData){
   debugger;
 	Object.keys(schema.properties).forEach((fieldName) => {
   	let field = schema.properties[fieldName];
@@ -344,6 +344,44 @@ function enrichForm(schema, uiSchema, formData){
   	if (promises.length) {
     	Promise.all(promises).then(()=>{
       	resolve({schema, uiSchema, formData});
+      })
+    } else {
+      resolve({schema, uiSchema, formData});
+    }
+  })
+  return promiseToReturn;
+}*/
+
+function enrichForm(schema, uiSchema, formData){
+  debugger;
+  if (schema.type === 'object' && schema.properties) {
+    Object.keys(schema.properties).forEach((fieldName) => {
+      let field = schema.properties[fieldName];
+      if ((field.type === 'object' && field.properties) || (field.type === 'array' && field.items)) {
+        enrichForm(field, uiSchema, formData);
+      }
+      if (field && field.dataSourceUrl) {
+        fetchData(field, promises);
+      }
+    });
+  } else if(schema.type === 'array' && (Array.isArray(schema.items))){{
+      schema.items.forEach((field) => {
+        if ((field.type === 'object' && field.properties) || (field.type === 'array' && field.items)) {
+          enrichForm(field, uiSchema, formData);
+        }
+        if (field && field.dataSourceUrl) {
+          fetchData(field, promises);
+        }
+      })
+    }
+  } else if (schema && schema.dataSourceUrl){
+    fetchData(field, promises);
+  }
+  
+  const promiseToReturn = new Promise((resolve, reject) => {
+    if (promises.length) {
+      Promise.all(promises).then(()=>{
+        resolve({schema, uiSchema, formData});
       })
     } else {
       resolve({schema, uiSchema, formData});
