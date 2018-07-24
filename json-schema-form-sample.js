@@ -373,16 +373,24 @@ function enrichForm(schema, uiSchema, formData){
         fetchData(field, promises);
       }
     });
-  } else if(schema.type === 'array' && (Array.isArray(schema.items))){{
-      schema.items.forEach((field) => {
-        if ((field.type === 'object' && field.properties) || (field.type === 'array' && field.items)) {
-          enrichForm(field, uiSchema, formData);
-        }
-        if (field && field.dataSourceUrl) {
-          fetchData(field, promises);
-        }
-      })
-    }
+  } else if(schema.type === 'array'){
+      if (!Array.isArray(schema.items)) {
+         if ((schema.items.type === 'object' && schema.items.properties) || (schema.items.type === 'array' && schema.items.items)) {
+              enrichForm(schema.items, uiSchema, formData);
+            } else if (schema.items && schema.items.dataSourceUrl) {
+              fetchData(schema.items, promises);
+          }
+      } else if (Array.isArray(schema.items)){
+        schema.items.forEach((field) => {
+            if ((field.type === 'object' && field.properties) || (field.type === 'array' && field.items)) {
+                enrichForm(field, uiSchema, formData);
+              }
+          if (field && field.dataSourceUrl) {
+            fetchData(field, promises);
+          }
+        })
+      }
+    
   } else if (schema && schema.dataSourceUrl){
     fetchData(field, promises);
   }
